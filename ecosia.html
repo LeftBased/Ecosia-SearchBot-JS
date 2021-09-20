@@ -40,6 +40,21 @@
             <div class="content" style="float:center;position: relative;">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript">
+var m_w = 123456789;
+var m_z = 987654321;
+var mask = 0xffffffff;
+function seed(i) {
+    m_w = (123456789 + i) & mask;
+    m_z = (987654321 - i) & mask;
+}
+function random()
+{
+    m_z = (36969 * (m_z & 65535) + (m_z >> 16)) & mask;
+    m_w = (18000 * (m_w & 65535) + (m_w >> 16)) & mask;
+    var result = ((m_z << 16) + (m_w & 65535)) >>> 0;
+    result /= 4294967296;
+    return result;
+} /* end of better js random */
 var words = [
     "ability","able","aboard","about","above","accept","accident","according",
   "account","accurate","acres","across","act","action","active","activity",
@@ -289,7 +304,7 @@ var words = [
     i = 0;
 
     var getRandomWord = function () {
-    return words[Math.floor(Math.random() * words.length)];
+    return words[Math.floor(random() * words.length)];
     };
 
 var popupWindow;
